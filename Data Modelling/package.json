@@ -1,0 +1,17 @@
+{
+  "name": "schema",
+  "version": "1.0.0",
+  "description": "Data Modelling",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "Rudra",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0",
+    "mongoose": "^8.15.2"
+  }
+}
