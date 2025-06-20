@@ -10,7 +10,7 @@ fs.readFile("test.txt","utf-8",(err,data) => {
     else console.log(data)
 })
 
-fs.writeFile("test.txt","Hello from rudra",(err) => {
+fs.writeFile("test.txt","Hello from Rudra",(err) => {
     if(err) throw err
     else console.log("File updated")
 })
