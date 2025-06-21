@@ -17,4 +17,10 @@ app.use(express.static("public"))
 app.use(cookieParser())  //For accessing the user's cookie and setting it
 
 
+//Routes writing
+import router from './routes/user.route.js'
+
+app.use("/api/v1/user",router)               //The control is passed to router file 
+
+//http://localhost8000/api/v1/user/register
 export {app}

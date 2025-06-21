@@ -50,10 +50,13 @@ const userSchema = new Schema({
 userSchema.pre("save", async function() {
     if(!this.isModified("password"))return next();
 
-    this.password = bcrypt.hash(this.password,10)
+    this.password = bcrypt.hash(this.password,10)       //Encrypt the password before saving it to the database
+    // 10 is the salt rounds, it determines how many times the password will be hashed
     next()
 })
 
+//Methods can be used to add custom functions to the model
+//Here we are adding a method to the userSchema to check if the password is correct
 userSchema.methods.isPasswordCorrect = async function(password){
     return await bcrypt.compare(password,this.password)
 }

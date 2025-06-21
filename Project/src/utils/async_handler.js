@@ -17,3 +17,5 @@ const asyncHandler = (fn) => (req,res,next) => {
 
 //     }
 // }
+
+export {asyncHandler}
