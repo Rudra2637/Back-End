@@ -1,5 +1,6 @@
 import mongoose,{Schema} from "mongoose";
-import { JsonWebTokenError } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
+
 import bcrypt from "bcrypt"
 
 
@@ -47,10 +48,10 @@ const userSchema = new Schema({
     }
 },{timestamps:true})
 
-userSchema.pre("save", async function() {
+userSchema.pre("save", async function(next) {
     if(!this.isModified("password"))return next();
 
-    this.password = bcrypt.hash(this.password,10)       //Encrypt the password before saving it to the database
+    this.password = await bcrypt.hash(this.password,10)       //Encrypt the password before saving it to the database
     // 10 is the salt rounds, it determines how many times the password will be hashed
     next()
 })
