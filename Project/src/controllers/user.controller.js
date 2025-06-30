@@ -178,8 +178,8 @@ const logOut = asyncHandler(async (req,res) => {
     await User.findByIdAndUpdate(
         req.user._id,
         {
-            $set:{
-                refreshToken:undefined
+            $unset:{
+                refreshToken:1           //Removes the field from the document
             }
         },
         {
@@ -375,7 +375,7 @@ const getUserChannelProfile = asyncHandler(async(req,res) => {
         {
             $addFields:{
                 subscriberCount:{
-                    $size:"$subscriber"
+                    $size:"$subscribers"         //   $size:"$subscribers" try this if error 
                 },
                 channelSubscribedToCount:{
                     $size:"$subscribedTo"
@@ -410,6 +410,53 @@ const getUserChannelProfile = asyncHandler(async(req,res) => {
 
 })
 
+const getWatchHistory = asyncHandler(async(req,res) => {
+    const user = await User.aggregate([
+        {
+            $match:{
+                _id:new mongoose.Types.ObjectId(req.user._id)
+            }
+        },
+        {
+            $lookup:{
+                from:"videos",
+                localField:"watchHistory",
+                foreignField:"_id",
+                as:"watchHistory",
+                pipeline:[
+                    {
+                        $lookup:{
+                            from:"users",
+                            localField:"owner",
+                            foreignField:"_id",
+                            as:"owner",
+                            pipeline:[
+                                {
+                                    $project:{
+                                        fullName:1,
+                                        userName:1,
+                                        avatar:1
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        $addFields:{
+                            owner:{
+                                $first:"$owner"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    ])
+
+    return res.status(200)
+    .json(new ApiResponse(200,user[0].watchHistory,"Watch History fetched Successfully"))
+})
+
 export {
     registerUser,
     loginUser,
@@ -417,6 +464,9 @@ export {
     refreshAccessToken,
     changeCurrentPassword,
     getCurrentUser,
+    updateAccountDetails,
     updateUserAvatar,
-    updateUserCover
+    updateUserCover,
+    getUserChannelProfile,
+    getWatchHistory
 }
