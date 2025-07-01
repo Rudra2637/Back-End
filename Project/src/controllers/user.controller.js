@@ -1,9 +1,10 @@
-import { asyncHandler } from "../utils/async_handler.js";
+import { asyncHandler } from "../utils/async_Handler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { User } from "../models/user.model.js";
 import { deleteImage, uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken"
+import mongoose from "mongoose";
 
 // let oldImagePublicId ;
 // let oldCoverPublicId;
@@ -250,7 +251,7 @@ const changeCurrentPassword = asyncHandler(async(req,res) => {
 
     // const user = User.findOne({userName})
     // if(!user)throw new ApiError(401,"Invalid user");
-
+    
     const {oldPassword,newPassword} = req.body
 
     const user = await User.findById(req.user?._id)

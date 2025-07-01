@@ -11,8 +11,8 @@ dotenv.config({
 
 connection()
 .then(() => {
-    app.on("error",(err) => {
-        console.log(err)
+    app.on("error",(err) => {                     //Used for listening error events
+        console.log(err)              
     })
     app.listen(process.env.PORT || 3000 , () => {
         console.log(`Port is running on http://localhost:${process.env.PORT}`)
