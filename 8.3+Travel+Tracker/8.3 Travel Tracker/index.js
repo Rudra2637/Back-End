@@ -59,9 +59,7 @@ app.post("/add",async(req,res) => {
       else {
         const randomId = Math.floor(1000 + Math.random() * 9000);
         
-        
         const code = await db.query('INSERT INTO visited_countries (id,country_code) VALUES ($1,$2)',[randomId,result.rows[0].country_code]);
-        
       }
     }
     
